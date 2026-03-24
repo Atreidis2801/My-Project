@@ -1,0 +1,33 @@
+import sqlite3
+from datetime import datetime
+
+def setup_database():
+    conn = sqlite3.connect('glucose_monitor.db')
+    cursor = conn.cursor()
+
+    # Create User table
+    cursor.execute('''CREATE TABLE IF NOT EXISTS User 
+                     (reg_num TEXT PRIMARY KEY, name TEXT, weight REAL)''')
+
+    # Create Glucose_Log table
+    cursor.execute('''CREATE TABLE IF NOT EXISTS Glucose_Log 
+                     (log_id INTEGER PRIMARY KEY, reg_num TEXT, 
+                      timestamp TEXT, level REAL, 
+                      FOREIGN KEY(reg_num) REFERENCES User(reg_num))''')
+    
+    # Insert Student Data
+    cursor.execute("INSERT OR IGNORE INTO User VALUES ('25BOE10040', 'Atreyi Barma Majumder', 60.5)")
+    conn.commit()
+    return conn
+
+def log_reading(conn, level):
+    cursor = conn.cursor()
+    time_now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    cursor.execute("INSERT INTO Glucose_Log (reg_num, timestamp, level) VALUES (?, ?, ?)", 
+                   ('25BOE10040', time_now, level))
+    conn.commit()
+
+# Initialize and log a test value
+db_conn = setup_database()
+log_reading(db_conn, 112.5)
+print("\nDatabase entry successful for User: 25BOE10040")
