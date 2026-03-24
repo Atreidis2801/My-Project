@@ -1,0 +1,24 @@
+import matplotlib.pyplot as plt
+
+def generate_result_plot():
+    hours = list(range(1, 13))
+    # Simulated 12-hour glucose trend
+    glucose_levels = [95, 98, 105, 130, 145, 125, 110, 100, 92, 95, 102, 108]
+
+    plt.figure(figsize=(10, 5))
+    plt.plot(hours, glucose_levels, marker='o', color='gold', label='AuNP Sensor Output')
+    plt.axhline(y=140, color='r', linestyle='--', label='High Threshold')
+    plt.axhline(y=70, color='b', linestyle='--', label='Low Threshold')
+    
+    plt.title("24-Hour Continuous Glucose Monitoring (Atreyi - 25BOE10040)")
+    plt.xlabel("Time (Hours)")
+    plt.ylabel("Glucose Concentration (mg/dL)")
+    plt.legend()
+    plt.grid(True, alpha=0.3)
+    
+    # Save this for Slide 10
+    plt.savefig('glucose_trend_result.png')
+    print("\nResult graph 'glucose_trend_result.png' generated for Slide 10.")
+    plt.show()
+
+generate_result_plot()
